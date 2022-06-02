@@ -1,0 +1,40 @@
+{
+  "name": "mathdown",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "svelte-kit dev",
+    "build": "svelte-kit build",
+    "package": "svelte-kit package",
+    "preview": "svelte-kit preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-node": "next",
+    "@sveltejs/kit": "next",
+    "@tiptap/core": "2.0.0-beta.176",
+    "@tiptap/extension-bubble-menu": "2.0.0-beta.56",
+    "@tiptap/extension-floating-menu": "2.0.0-beta.51",
+    "@tiptap/extension-history": "2.0.0-beta.21",
+    "@tiptap/starter-kit": "2.0.0-beta.185",
+    "@types/katex": "^0.14.0",
+    "katex": "0.15.6",
+    "rehype-katex": "^6.0.2",
+    "rehype-parse": "^8.0.4",
+    "rehype-stringify": "^9.0.3",
+    "remark": "^14.0.2",
+    "remark-math": "^5.1.1",
+    "remark-parse": "^10.0.1",
+    "remark-rehype": "^10.1.0",
+    "svelte": "^3.48.0",
+    "svelte-check": "^2.7.1",
+    "svelte-preprocess": "^4.10.6",
+    "svelte-tiptap": "^0.5.2",
+    "tslib": "^2.4.0",
+    "typescript": "^4.7.2",
+    "typescript-parsec": "^0.3.2",
+    "unified": "^10.1.2",
+    "unist-util-visit": "^4.1.0"
+  },
+  "type": "module"
+}
