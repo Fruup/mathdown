@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { html } from "./store";
-
 	// let result: string
 
 	// $: {
@@ -17,7 +15,6 @@
 
 <div class="container">
 	<!-- {@html result} -->
-	{@html $html}
 </div>
 
 <style>

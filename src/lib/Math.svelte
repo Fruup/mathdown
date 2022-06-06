@@ -24,8 +24,8 @@
 	}
 
 	export let code: string = 'math!'
-
-	let editing = true
+	export let editing = true
+	
 	let element: HTMLElement
 	let editor: HTMLTextAreaElement
 	let preview: HTMLElement

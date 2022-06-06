@@ -4,7 +4,7 @@
 	import StarterKit from '@tiptap/starter-kit'
 	import { onDestroy, onMount } from 'svelte';
 	import { fly } from 'svelte/transition'
-	import { html } from './store';
+	// import { html } from './store';
 	import './Editor.css'
 
 	onMount(() => {
@@ -28,7 +28,7 @@
 			},
 		})
 		
-		$html = editor.getHTML()
+		// $html = editor.getHTML()
 	})
 
 	onDestroy(() => {

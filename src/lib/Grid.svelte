@@ -23,7 +23,6 @@
 	console.log($storedSeparatorPosition)
 
 	let separatorPosition: number = $storedSeparatorPosition
-	// let separatorPosition: number = .5
 	let container: HTMLDivElement
 	let dragging = false
 
