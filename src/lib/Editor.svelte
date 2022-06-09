@@ -1,3 +1,7 @@
+<script context="module" lang="ts">
+	export const editor = writable<Editor>()
+</script>
+
 <script lang="ts">
 	import { Editor } from '@tiptap/core'
 	import MyExtension from './extension'
@@ -6,13 +10,14 @@
 	import { fly } from 'svelte/transition'
 	// import { html } from './store';
 	import './Editor.css'
+	import { writable } from 'svelte/store';
 
 	onMount(() => {
 		StarterKit.configure({
 			code: {},
 		})
 
-		editor = new Editor({
+		$editor = new Editor({
 			element,
 			extensions: [
 				MyExtension,
@@ -21,18 +26,20 @@
 			// content: '<p>Hello world! 🌍️</p>',
 			onTransaction() {
 				// force rerender so 'editor.isActive' works as expected
-				editor = editor
+				$editor = $editor
 			},
 			onUpdate({ transaction }) {
 				// $html = editor.getHTML()
 			},
 		})
+
+		$editor.commands.focus()
 		
 		// $html = editor.getHTML()
 	})
 
 	onDestroy(() => {
-		if (editor) editor.destroy()
+		if ($editor) $editor.destroy()
 	})
 
 	function handleBodyKeydown(e: KeyboardEvent) {
@@ -45,30 +52,29 @@
 	}
 
 	let element: Element
-	let editor: Editor
 </script>
 
 <svelte:body on:keydown={handleBodyKeydown} />
 
 <div class="container">
-	{#if editor}
+	{#if $editor}
 		<header transition:fly={{ delay: 500, y: -50, duration: 750 }}>
 			<button
-				on:click={() => editor.chain().focus().toggleHeading({ level: 1}).run()}
-				class:active={editor.isActive('heading', { level: 1 })}
+				on:click={() => $editor.chain().focus().toggleHeading({ level: 1}).run()}
+				class:active={$editor.isActive('heading', { level: 1 })}
 			>
 				H1
 			</button>
 			<button
-				on:click={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-				class:active={editor.isActive('heading', { level: 2 })}
+				on:click={() => $editor.chain().focus().toggleHeading({ level: 2 }).run()}
+				class:active={$editor.isActive('heading', { level: 2 })}
 			>
 				H2
 			</button>
-			<button on:click={() => editor.chain().focus().setParagraph().run()} class:active={editor.isActive('paragraph')}>
+			<button on:click={() => $editor.chain().focus().setParagraph().run()} class:active={$editor.isActive('paragraph')}>
 				P
 			</button>
-			<button on:click={() => editor.chain().focus().toggleCode().run()} class:active={editor.isActive('code')}>
+			<button on:click={() => $editor.chain().focus().toggleCode().run()} class:active={$editor.isActive('code')}>
 				code
 			</button>
 		</header>
@@ -77,7 +83,7 @@
 	<div
 		spellcheck="false"
 		class="editor"
-		class:active={editor && editor.isActive({})}
+		class:active={$editor && $editor.isActive({})}
 		bind:this={element}
 	/>
 </div>

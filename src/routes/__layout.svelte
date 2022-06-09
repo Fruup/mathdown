@@ -2,11 +2,12 @@
 
 <style global>
 	@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
-	
+	@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;700&display=swap');
+
 	html {
 		height: 100vh;
 
-		font-family: 'Cascadia Code', sans-serif;
+		font-family: 'Cascadia Code', 'Source Code Pro', 'Open Sans', sans-serif;
 		font-size: 1.2rem;
 	}
 	

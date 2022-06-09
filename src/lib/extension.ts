@@ -1,30 +1,28 @@
 import { Node, mergeAttributes, nodeInputRule } from '@tiptap/core';
 import { SvelteNodeViewRenderer } from 'svelte-tiptap';
-
+import type { MathOptions } from './Math.svelte';
 import MathWrapper from './MathWrapper.svelte';
-
-const attrs: string[] = [
-  'code',
-]
 
 export default Node.create({
   name: 'SvelteMathComponent',
   group: 'inline',
-  atom: true,
+  atom: false,
   draggable: true, // Optional: to make the node draggable
   inline: true,
   selectable: false,
 
-  // addAttributes() {
-  //   return {
-  //     code: {
-  //       default: 'defcode',
-  //       keepOnSplit: false,
-  //       parseHTML: (element) => element.getAttribute('code'),
-  //       renderHTML: (attributes) => attributes['code'],
-  //     },
-  //   };
-  // },
+  addAttributes() {
+    return {
+      code: {
+        default: 'math!',
+      },
+      options: {
+        default: {
+          inline: true,
+        } as MathOptions,
+      },
+    }
+  },
 
   parseHTML() {
     console.log('parse', this)
@@ -42,7 +40,7 @@ export default Node.create({
 
   renderHTML({ HTMLAttributes, node }) {
     console.log('render', HTMLAttributes, node)
-    return ['svelte-math-component', mergeAttributes(HTMLAttributes)];
+    return ['svelte-math-component', HTMLAttributes]
   },
 
   addNodeView() {
@@ -61,7 +59,7 @@ export default Node.create({
   addKeyboardShortcuts() {
     return {
       'Control-m': () => {
-        return this.editor.commands.insertContent("<svelte-math-component code='henlo'></svelte-math-component>")
+        return this.editor.commands.insertContent("<svelte-math-component></svelte-math-component>")
       }
     }
   },

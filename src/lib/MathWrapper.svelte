@@ -3,22 +3,27 @@
 	import { NodeViewWrapper } from 'svelte-tiptap'
 	import Math from './Math.svelte'
 
+	export let editor: NodeViewProps['editor']
 	export let node: NodeViewProps['node']
+	export let decorations: NodeViewProps['decorations']
+	export let selected: NodeViewProps['selected']
+	export let extension: NodeViewProps['extension']
+	export let getPos: NodeViewProps['getPos']
 	export let updateAttributes: NodeViewProps['updateAttributes']
-	export let selected: NodeViewProps['selected'] = false
-
-	let code: string
-
-	$: {
-		updateAttributes({ code: code })
-		console.log('code', code, node.attrs)
-	}
-	$: console.log('selected', selected)
-	$: console.log('node', node)
+	export let deleteNode: NodeViewProps['deleteNode']
 </script>
 
 <NodeViewWrapper>
-	<Math bind:code />
+	<Math
+		{editor}
+		{node}
+		{decorations}
+		{selected}
+		{extension}
+		{getPos}
+		{updateAttributes}
+		{deleteNode}
+	/>
 </NodeViewWrapper>
 
 <style>
