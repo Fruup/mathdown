@@ -1,18 +1,21 @@
 <script lang="ts" context="module">
 	import type { MathOptions } from "./types"
-	import { get, writable, type Writable } from "svelte/store"
+	import { writable, type Writable } from "svelte/store"
 
+	export const open = writable(false)
 	const codeStore = writable<Writable<string>>()
 	const optionsStore = writable<Writable<MathOptions>>()
 
 	export async function init(code: Writable<string>, options: Writable<MathOptions>) {
 		codeStore.set(code)
 		optionsStore.set(options)
+		open.set(true)
 	}
 
 	export function close() {
 		codeStore.set(undefined)
 		optionsStore.set(undefined)
+		open.set(false)
 	}
 </script>
 
@@ -46,12 +49,6 @@
 		}
 	}
 
-	function handleWindowMousedown(e: MouseEvent) {
-		if (e.target !== textarea) {
-			close()
-		}
-	}
-
 	onMount(async () => {
 		await tick()
 		if (textarea) textarea.select()
@@ -69,8 +66,6 @@
 		})
 	}
 </script>
-
-<!-- <svelte:window on:mousedown={handleWindowMousedown} /> -->
 
 <button on:click={handleSave}>
 	Save

@@ -1,10 +1,29 @@
-import { Node, mergeAttributes, nodeInputRule } from '@tiptap/core';
+import { Node, type JSONContent } from '@tiptap/core';
 import { SvelteNodeViewRenderer } from 'svelte-tiptap';
-import type { MathOptions } from './Math.svelte';
+import type { MathOptions } from './types';
 import MathWrapper from './MathWrapper.svelte';
 
+export const defaultCode: string = 'math!'
+export const defaultOptions: MathOptions = {
+  inline: true,
+}
+
+const nodeName = "SvelteMathComponent"
+
+function createNodeContent(params?: { code?: string, options?: MathOptions }): JSONContent {
+  params = params ?? {}
+
+  return {
+    type: nodeName,
+    attrs: {
+      code: params.code ?? defaultCode,
+      options: params.options ?? defaultOptions,
+    },
+  }
+}
+
 export default Node.create({
-  name: 'SvelteMathComponent',
+  name: nodeName,
   group: 'inline',
   atom: false,
   draggable: true, // Optional: to make the node draggable
@@ -14,32 +33,19 @@ export default Node.create({
   addAttributes() {
     return {
       code: {
-        default: 'math!',
+        default: defaultCode,
       },
       options: {
-        default: {
-          inline: true,
-        } as MathOptions,
+        default: defaultOptions as MathOptions,
       },
     }
   },
 
   parseHTML() {
-    console.log('parse', this)
-    return [
-      {
-        tag: 'svelte-math-component',
-        // getAttrs(node) {
-        //   if (typeof node === 'string') return false
-        //   console.log('getAttrs', Object.fromEntries(attrs.map(attr => [attr, node.getAttribute(attr)])))
-        //   return Object.fromEntries(attrs.map(attr => [attr, node.getAttribute(attr)]))
-        // }
-      },
-    ];
+    return [{ tag: nodeName }];
   },
 
   renderHTML({ HTMLAttributes, node }) {
-    console.log('render', HTMLAttributes, node)
     return ['svelte-math-component', HTMLAttributes]
   },
 
@@ -48,18 +54,35 @@ export default Node.create({
   },
 
   addInputRules() {
+    const self = this
     return [
-        nodeInputRule({
-            find: /\$\$/,
-            type: this.type,
-        }),
+      {
+        find: /\$\$\s/,
+        handler({ commands, range }) {
+          commands.deleteRange(range)
+
+          setTimeout(() => {
+            self.editor.commands.insertContent(createNodeContent({ options: { inline: false } }))
+          })
+        },
+      },
+      {
+        find: /\$\s/,
+        handler({ commands, range }) {
+          commands.deleteRange(range)
+
+          setTimeout(() => {
+            self.editor.commands.insertContent(createNodeContent())
+          })
+        },
+      },
     ]
   },
 
   addKeyboardShortcuts() {
     return {
       'Control-m': () => {
-        return this.editor.commands.insertContent("<svelte-math-component></svelte-math-component>")
+        return this.editor.commands.insertContent(createNodeContent())
       }
     }
   },
