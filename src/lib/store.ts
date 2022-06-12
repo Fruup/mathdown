@@ -1,5 +1,8 @@
-import { browser } from "$app/env";
-import { writable } from "svelte/store";
+import { browser } from "$app/env"
+import { writable } from "svelte/store"
+import type {
+	MathState,
+} from './types'
 
 export function clampSeparatorPosition(value: number): number {
 	return Math.max(Math.min(value, .75), .25)
@@ -30,3 +33,5 @@ export const separatorPosition = (() => {
 
 	return store
 })()
+
+export const mathComponents = writable<Record<number, MathState>>()

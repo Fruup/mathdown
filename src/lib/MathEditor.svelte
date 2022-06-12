@@ -1,18 +1,25 @@
 <script lang="ts" context="module">
-	import type { MathOptions } from "./Math.svelte"
-	import { writable } from "svelte/store"
+	import type { MathOptions } from "./types"
+	import { get, writable, type Writable } from "svelte/store"
 
-	export const code = writable<string>('')
-	export const show = writable<boolean>(false)
-	export const target = writable<HTMLElement>()
-	export const options = writable<MathOptions>()
+	const codeStore = writable<Writable<string>>()
+	const optionsStore = writable<Writable<MathOptions>>()
+
+	export async function init(code: Writable<string>, options: Writable<MathOptions>) {
+		codeStore.set(code)
+		optionsStore.set(options)
+	}
+
+	export function close() {
+		codeStore.set(undefined)
+		optionsStore.set(undefined)
+	}
 </script>
 
 <script lang="ts">
 	import { onMount, tick } from "svelte"
 	import Checkbox from "./Checkbox.svelte"
-	import { editor } from "./Editor.svelte";
-import { text } from "svelte/internal";
+	import { editor } from "./Editor.svelte"
 
 	function handleSave() {
 		if ($editor) {
@@ -35,13 +42,13 @@ import { text } from "svelte/internal";
 	function handleKeydown(e: KeyboardEvent) {
 		if (e.ctrlKey && e.key === 'Enter') {
 			e.preventDefault()
-			$show = false
+			close()
 		}
 	}
 
 	function handleWindowMousedown(e: MouseEvent) {
 		if (e.target !== textarea) {
-			$show = false
+			close()
 		}
 	}
 
@@ -52,7 +59,11 @@ import { text } from "svelte/internal";
 
 	let textarea: HTMLTextAreaElement
 
-	$: if ($show) {
+	$: code = $codeStore
+	$: options = $optionsStore
+	$: show = options && code
+
+	$: if (show) {
 		tick().then(() => {
 			if (textarea) textarea.select()
 		})
@@ -68,7 +79,7 @@ import { text } from "svelte/internal";
 	Load
 </button>
 
-{#if $show}
+{#if show}
 	<div
 		class="math-editor"
 		on:keydown={handleKeydown}
