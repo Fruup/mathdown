@@ -7,32 +7,26 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
-import { lexer } from "$lib/lang/parser";
-import langPlugin from '$lib/lang/plugin';
 
 const katexOptions: katex.KatexOptions = {
-	displayMode: true,
-	output: "mathml",
+
+	strict: false,
 };
 
 // unified processor
 const unif = unified.unified();
-unif.use(rehypeParse);
-// unif.use(remarkParse);
+// unif.use(rehypeParse);
+unif.use(remarkParse);
 // unif.use(langPlugin);
-// unif.use(remarkMath);
-// unif.use(remarkRehype);
-unif.use(rehypeKatex);
+unif.use(remarkMath);
+unif.use(remarkRehype);
+unif.use(rehypeKatex, katexOptions);
 unif.use(rehypeStringify);
 
 // post request handler
 export const post: RequestHandler = async ({ request }) => {
 	const code = await request.text();
 	const html = unif.processSync(code).value;
-
-	console.log(code, html)
-
-	// console.log(unif.processSync(code))
 
 	if (typeof html !== "string") {
 		console.log(html)

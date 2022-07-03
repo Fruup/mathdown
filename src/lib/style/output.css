@@ -1,0 +1,6 @@
+img {
+	--width: 75%;
+
+	width: var(--width);
+	margin-left: calc((100% - var(--width)) / 2);
+}

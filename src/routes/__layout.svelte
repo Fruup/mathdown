@@ -1,3 +1,20 @@
+<script>
+	import { browser } from "$app/env"
+
+	function toggleDarkMode() {
+		if (!browser) return
+
+		if (document.body.classList.contains('dark'))
+			document.body.classList.remove('dark')
+		else
+			document.body.classList.add('dark')
+	}
+</script>
+
+<button on:click={toggleDarkMode}>
+	DARK
+</button>
+
 <slot />
 
 <style global>
@@ -16,20 +33,25 @@
 	}
 
 	body {
-		width: 100%;
-		height: calc(100vh - 1rem);
-		height: 100%;
-
-		overflow: hidden;
-
-		/* padding: .5rem; */
 		margin: 0;
+		padding: 0;
 
-		user-select: none;
+		--text-color: #111;
+		--background-color: #fff;
 	}
 
-	div#svelte {
-		width: 100%;
-		height: 100%;
+	body.dark {
+		--text-color: #eee;
+		--background-color: rgb(50, 50, 50);
+	}
+
+	body,
+	textarea {
+		color: var(--text-color);
+		background-color: var(--background-color);
+
+		transition-property: color background-color;
+		transition-duration: 500ms;
+		transition-timing-function: ease-out;
 	}
 </style>

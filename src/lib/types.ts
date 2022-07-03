@@ -1,8 +1,5 @@
-export type MathOptions = {
-	inline: boolean,
-}
-
-export type MathState = {
-	options: MathOptions,
+export type Project = {
+	id: string,
+	name: string,
 	code: string,
 }

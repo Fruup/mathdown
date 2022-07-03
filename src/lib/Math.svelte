@@ -4,16 +4,6 @@
 	import katex, { type KatexOptions } from 'katex'
 	import * as mathEditor from './MathEditor.svelte'
 	import { writable } from 'svelte/store'
-	import { defaultCode, defaultOptions } from './extension'
-
-	export let editor: NodeViewProps['editor']
-	export let node: NodeViewProps['node']
-	export let decorations: NodeViewProps['decorations']
-	export let selected: NodeViewProps['selected']
-	export let extension: NodeViewProps['extension']
-	export let getPos: NodeViewProps['getPos']
-	export let updateAttributes: NodeViewProps['updateAttributes']
-	export let deleteNode: NodeViewProps['deleteNode']
 
 	const code = writable(node.attrs.code ?? defaultCode)
 	const options = writable(node.attrs.options ?? defaultOptions)
@@ -28,10 +18,6 @@
 	}
 	
 	let element: HTMLElement
-
-	mathEditor.open.subscribe((open) => {
-		editor.commands.focus()
-	})
 
 	onMount(() => {
 		mathEditor.init(code, options)
@@ -49,7 +35,6 @@
 
 		katex.render(_code, element, katexOptions)
 	})
-	$: updateAttributes({ code: $code, options: $options })
 </script>
 
 <div

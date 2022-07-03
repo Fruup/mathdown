@@ -1,4 +1,6 @@
 <script lang="ts">
+import { browser } from '$app/env';
+
 	import { clampSeparatorPosition, separatorPosition as storedSeparatorPosition } from './store'
 
 	function handleMouseMove(e: MouseEvent) {
@@ -27,6 +29,8 @@
 	$: if (typeof document !== 'undefined') {
 		document.body.style.cursor = dragging ? 'e-resize' : 'initial'
 	}
+
+	$: if (browser) document.body.style.userSelect = dragging ? 'none' : 'initial'
 </script>
 
 <div
@@ -60,12 +64,17 @@
 
 <style>
 .container {
-	position: relative;
-
 	display: flex;
 	flex-direction: row;
 
+	align-items: stretch;
+
 	width: 100%;
+	height: 100%;
+}
+
+.col1,
+.col2 {
 	height: 100%;
 }
 

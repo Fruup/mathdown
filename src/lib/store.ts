@@ -34,4 +34,7 @@ export const separatorPosition = (() => {
 	return store
 })()
 
-export const mathComponents = writable<Record<number, MathState>>()
+export const code = (() => {
+	const init = browser ? (localStorage.getItem('code') ?? '') : ''
+	return writable<string>(init)
+})()
