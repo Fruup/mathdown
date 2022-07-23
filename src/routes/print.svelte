@@ -1,9 +1,9 @@
 <script lang="ts">
-	import Preview from '$lib/Preview.svelte'
+	import Preview from '$lib/components/Preview.svelte'
 </script>
 
 <div class="container">
-	<Preview dinA4={true} />
+	<Preview />
 </div>
 
 <style>

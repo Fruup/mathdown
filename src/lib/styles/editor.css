@@ -1,0 +1,30 @@
+.cm-editor,
+.cm-scroller {
+	width: 100%;
+	height: 100%;
+	caret-color: var(--text-color);
+}
+
+.cm-scroller {
+	outline: none;
+	border: none;
+
+	padding: 2.5em 3em;
+	font-size: 1em;
+}
+
+.ͼ1 .cm-activeLine {
+	background-color: var(--background-color-highlight);
+}
+
+.ͼ1 .cm-cursor {
+	border-left-color: var(--text-color);
+}
+
+.ͼ6.ͼc {
+	color: var(--link-color) !important;
+}
+
+.ͼ1.cm-editor.cm-focused {
+	outline: none;
+}

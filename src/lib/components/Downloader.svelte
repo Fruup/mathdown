@@ -21,12 +21,13 @@
 	import { onMount } from "svelte"
 
 	onMount(() => {
-		if (!$isSingleton)
+		if ($isSingleton)
 			throw Error('There can only be one Downloader.svelte instance on the page!')
 
 		$isSingleton = true
 	})
 </script>
 
-<a href="..." bind:this={$anchor} style="display: none">
-</a>
+<!-- svelte-ignore a11y-missing-attribute -->
+<!-- svelte-ignore a11y-missing-content -->
+<a bind:this={$anchor} style="display: none" />

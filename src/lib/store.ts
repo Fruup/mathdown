@@ -1,8 +1,5 @@
 import { browser } from "$app/env"
 import { writable } from "svelte/store"
-import type {
-	MathState,
-} from './types'
 
 export function clampSeparatorPosition(value: number): number {
 	return Math.max(Math.min(value, .75), .25)
@@ -38,3 +35,5 @@ export const code = (() => {
 	const init = browser ? (localStorage.getItem('code') ?? '') : ''
 	return writable<string>(init)
 })()
+
+export const darkMode = writable(false)

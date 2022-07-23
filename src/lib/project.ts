@@ -4,7 +4,7 @@ export type Project = {
 	code: string,
 }
 
-export function importProject(): Project {
+export function importProject() {
 	
 }
 
