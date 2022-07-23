@@ -14,18 +14,6 @@
 	}
 
 	const anchor = writable<HTMLAnchorElement>()
-	const isSingleton = writable(false)
-</script>
-
-<script lang="ts">
-	import { onMount } from "svelte"
-
-	onMount(() => {
-		if ($isSingleton)
-			throw Error('There can only be one Downloader.svelte instance on the page!')
-
-		$isSingleton = true
-	})
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->

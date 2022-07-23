@@ -19,6 +19,8 @@
 		border: none;
 		border-radius: 999px;
 
+		padding: 1rem;
+
 		cursor: pointer;
 	}
 

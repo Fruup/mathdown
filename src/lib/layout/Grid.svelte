@@ -5,20 +5,20 @@
 		separatorPosition as storedSeparatorPosition,
 	} from '$lib/store'
 
-	function handleMouseMove(e: MouseEvent) {
-		const f = (e.clientX - container.offsetLeft) / container.clientWidth
+	function handleMouseMove(e: PointerEvent) {
+		const f = (e.clientX - 10 - container.offsetLeft) / container.clientWidth
 		separatorPosition = clampSeparatorPosition(f)
 	}
 
-	function handleMouseDown(e: MouseEvent) {
-		window.addEventListener('mousemove', handleMouseMove)
-		window.addEventListener('mouseup', handleMouseUp)
+	function handleMouseDown(e: PointerEvent) {
+		window.addEventListener('pointermove', handleMouseMove)
+		window.addEventListener('pointerup', handleMouseUp)
 
 		dragging = true
 	}
 
-	function handleMouseUp(e: MouseEvent) {
-		window.removeEventListener('mousemove', handleMouseMove)
+	function handleMouseUp(e: PointerEvent) {
+		window.removeEventListener('pointermove', handleMouseMove)
 
 		dragging = false
 		$storedSeparatorPosition = separatorPosition
@@ -33,79 +33,62 @@
 	}
 
 	$: if (browser) document.body.style.userSelect = dragging ? 'none' : 'initial'
+
+	$: columns = `${100 * separatorPosition}% 16px ${
+		100 - 100 * separatorPosition
+	}%`
 </script>
 
-<div bind:this={container} class="container">
-	<div class="col1" style:width={100 * separatorPosition + '%'}>
+<div
+	bind:this={container}
+	class="container"
+	style:grid-template-columns={columns}
+>
+	<div class="col1">
 		<slot name="col1" />
 	</div>
 
-	<div
-		class="separator"
-		style:left={100 * separatorPosition + '%'}
-		on:mousedown={handleMouseDown}
-	>
-		<svg width="100%" height="100%">
-			<line
-				x1="50%"
-				y1="0"
-				x2="50%"
-				y2="100%"
-				stroke="black"
-				stroke-width="2"
-			/>
-		</svg>
+	<div class="separator" on:pointerdown={handleMouseDown}>
+		<div class="separator-line" />
 	</div>
 
-	<div class="col2" style:width={100 - 100 * separatorPosition + '%'}>
+	<div class="col2">
 		<slot name="col2" />
 	</div>
 </div>
 
 <style>
 	.container {
-		display: flex;
-		flex-direction: row;
-
-		/* align-items: stretch; */
+		display: grid;
 
 		width: 100%;
-		height: 100%;
+		min-height: 100%;
 	}
 
 	.col1,
 	.col2 {
-		/* overflow-y: auto; */
+		overflow-y: auto;
 	}
 
 	.separator {
-		position: absolute;
+		position: relative;
 
-		width: 20px;
+		text-align: center;
+
 		height: 100%;
-		transform: translateX(-50%);
 
 		cursor: e-resize;
 
 		z-index: 1;
-
-		stroke-opacity: 0.5;
-		transition: stroke-opacity 200ms ease-in-out;
-	}
-
-	.separator:hover {
-		stroke-opacity: 0.75;
 	}
 
 	.separator::before {
 		position: absolute;
 		content: '';
 		top: 0;
-		left: 50%;
+		left: 0;
 		bottom: 0;
 		right: 0;
-
-		transform: translateX(-50%);
 
 		background: linear-gradient(
 			0.25turn,
@@ -115,12 +98,28 @@
 		);
 
 		opacity: 0;
-		transition: opacity 200ms ease-in-out;
 
 		z-index: -1;
 	}
 
 	.separator:hover::before {
 		opacity: 1;
+	}
+
+	.separator::before,
+	.separator-line {
+		transition: opacity 200ms ease-in-out;
+	}
+
+	.separator-line {
+		width: 2px;
+		height: 100%;
+		background-color: var(--text-color);
+		margin: auto;
+		opacity: 0.5;
+	}
+	
+	.separator:hover .separator-line {
+		opacity: .75;
 	}
 </style>

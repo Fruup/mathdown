@@ -12,7 +12,7 @@
 	import { EditorView, minimalSetup } from 'codemirror'
 	import { DebouncedAction } from '$lib/helpers'
 
-	onMount(async () => {
+	onMount(() => {
 		const markdownLanguage = markdown()
 
 		const state = EditorState.create({
@@ -28,7 +28,7 @@
 				EditorView.lineWrapping,
 
 				// lineNumbers(),
-				// highlightActiveLine(),
+				highlightActiveLine(),
 				highlightSpecialChars({
 					addSpecialChars: /\$/,
 					render(code, desc, placeholder) {
