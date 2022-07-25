@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { code } from '$lib/store'
-	import { fade } from 'svelte/transition'
 	import '$lib/styles/output.css'
 
 	let result: string
@@ -19,7 +18,7 @@
 </script>
 
 {#if result}
-	<div transition:fade class="container">
+	<div class="container">
 		{@html result}
 	</div>
 {/if}

@@ -19,9 +19,10 @@
 	import Downloader from '$lib/components/Downloader.svelte'
 </script>
 
+<Downloader />
+
 <div id="app" class:dark={$darkMode}>
 	<!-- Out-of-layout elements -->
-	<Downloader />
 	<Overlay size="l" bind:open={$showProjectsOverlay}>HALLO!</Overlay>
 
 	<!-- Page layout -->
@@ -51,9 +52,12 @@
 	#app {
 		margin: 0;
 		padding: 0;
+
+		overflow: hidden;
 	}
 
-	#app, body {
+	#app,
+	body {
 		--text-color: #111;
 		--background-color: #fff;
 		--background-color-highlight: #f3f3f3;

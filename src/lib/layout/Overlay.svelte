@@ -66,7 +66,7 @@
 		display: grid;
 		place-content: center;
 
-		z-index: 1;
+		z-index: 100;
 	}
 
 	.overlay-container {
