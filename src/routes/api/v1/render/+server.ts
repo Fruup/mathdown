@@ -1,3 +1,4 @@
+import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from "@sveltejs/kit"
 
 import unified from "unified"
@@ -36,13 +37,9 @@ export const POST: RequestHandler = async ({ request }) => {
 	const html = compiled.value
 
 	if (typeof html !== "string") {
-		console.log(html)
-		return { status: 500, statusText: "Code did not render to string!" }
+		throw error(500, "Code did not render to string!")
 	}
 
 	// respond
-	return {
-		body: html,
-		status: 200,
-	}
+	return new Response(html);
 }

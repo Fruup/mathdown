@@ -1,18 +1,4 @@
-<script lang="ts" context="module">
-	export const load: Load = async ({ url }) => {
-		const param = url.searchParams.get('dark')
-		const dark: boolean = param ? JSON.parse(param) : true
-
-		darkMode.set(dark)
-
-		return {
-			status: 200,
-		}
-	}
-</script>
-
 <script lang="ts">
-	import type { Load } from '@sveltejs/kit'
 	import Header from '$lib/layout/Header.svelte'
 	import Overlay, { showProjectsOverlay } from '$lib/layout/Overlay.svelte'
 	import { darkMode } from '$lib/store'
