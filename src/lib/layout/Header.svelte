@@ -1,9 +1,14 @@
 <script lang="ts">
 	import IconMoon from '$lib/icons/IconMoon.svelte'
 	import Button from '$lib/components/Button.svelte'
-	import IconButton from '$lib/components/IconButton.svelte'
-	import { darkMode } from '$lib/store'
-	import { showProjectsOverlay } from './Overlay.svelte'
+	import { darkMode, showProjectsOverlay } from '$lib/store'
+import IconDownload from '$lib/icons/IconDownload.svelte'
+import { currentProject } from '$lib/project';
+
+	const handleThemeChange = () => {
+		$darkMode = !$darkMode
+		localStorage.setItem('dark', JSON.stringify($darkMode))
+	}
 </script>
 
 <header>
@@ -16,7 +21,12 @@
 		<h1>_MATHDOWN_</h1>
 	</a>
 	<div>
-		<IconButton on:click={() => ($darkMode = !$darkMode)} icon={IconMoon} />
+		<Button on:click={handleThemeChange}>
+			<IconMoon />
+		</Button>
+		<Button href={`${$currentProject.id}/print`}>
+			<IconDownload />
+		</Button>
 	</div>
 </header>
 
@@ -30,9 +40,12 @@
 		box-shadow: 0 0 12px 12px var(--shadow-color);
 	}
 
-	header * {
-		display: grid;
-		place-content: center;
+	header > * {
+		display: flex;
+		flex-direction: row;
+
+		justify-items: center;
+		justify-content: space-around;
 	}
 
 	h1 {

@@ -1,26 +1,16 @@
-<script lang="ts">
-	import { browser } from '$app/env'
-	import { onDestroy, onMount } from 'svelte'
-	import { code } from '$lib/store'
-	import { markdown } from '@codemirror/lang-markdown'
-	import { EditorState } from '@codemirror/state'
-	import {
-		lineNumbers,
-		highlightActiveLine,
-		highlightSpecialChars,
-	} from '@codemirror/view'
-	import { EditorView, minimalSetup } from 'codemirror'
-	import { DebouncedAction } from '$lib/helpers'
+<script context="module" lang="ts">
+	export const editorCode = writable<string>('')
+	export const editor = writable<EditorView>()
 
-	onMount(() => {
-		const markdownLanguage = markdown()
+	const markdownLanguage = markdown()
 
-		const state = EditorState.create({
-			doc: myCode,
+	const createEditorState = (code?: string) =>
+		EditorState.create({
+			doc: code,
 			extensions: [
 				EditorView.updateListener.of((editor) => {
 					if (!editor.docChanged) return
-					myCode = editor.state.sliceDoc()
+					editorCode.set(editor.state.sliceDoc())
 				}),
 
 				// basicSetup,
@@ -36,38 +26,81 @@
 						elem.style.color = 'var(--dollarColor)'
 						elem.innerText = String.fromCharCode(code)
 						return elem
-					}
+					},
 				}),
 
 				markdownLanguage,
 			],
 		})
 
-		editor = new EditorView({
-			parent: editorContainer,
-			state,
+	export const createEditor = (parent: HTMLElement, code?: string) => {
+		const state = createEditorState(code)
+
+		return editor.set(
+			new EditorView({
+				parent,
+				state,
+			})
+		)
+	}
+
+	export const destroyEditor = () => {
+		editor.update((editor) => {
+			editor.destroy()
+			return undefined
 		})
+	}
+
+	export const setEditorState = (code: string) => {
+		editor.update((editor) => {
+			editor.setState(createEditorState(code))
+			editorCode.set(code)
+			return editor
+		})
+	}
+</script>
+
+<script lang="ts">
+	import { browser } from '$app/env'
+	import { onDestroy, onMount } from 'svelte'
+	import { markdown } from '@codemirror/lang-markdown'
+	import { EditorState } from '@codemirror/state'
+	import {
+		lineNumbers,
+		highlightActiveLine,
+		highlightSpecialChars,
+	} from '@codemirror/view'
+	import { EditorView, minimalSetup } from 'codemirror'
+	import { DebouncedAction } from '$lib/helpers'
+	import { currentProject, storeProject } from '$lib/project'
+	import { writable } from 'svelte/store'
+
+	onMount(() => {
+		if (!$editor) createEditor(editorContainer, $editorCode)
 	})
 
 	onDestroy(() => {
-		if (editor) editor.destroy()
+		if ($editor) destroyEditor()
 	})
 
-	let myCode = $code || ''
 	let editorContainer: HTMLElement
-	let editor: EditorView
 
 	const action = new DebouncedAction(() => {
-		$code = myCode
-		if (browser) localStorage.setItem('code', $code)
+		if (browser) {
+			$currentProject.code = $editorCode
+
+			if ($currentProject?.name) storeProject($currentProject)
+		}
 	}, 500)
 
-	$: if (myCode) action.invoke()
+	$: if ($editorCode) {
+		action.invoke()
+	}
 </script>
 
 <div
 	class="editor-container"
-	on:click={() => editor.focus()}
+	on:click={() => $editor.focus()}
 	bind:this={editorContainer}
 />
 

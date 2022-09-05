@@ -1,19 +1,24 @@
 <script lang="ts">
-	import { code } from '$lib/store'
+	import { currentProject, storedProjects } from '$lib/project'
 	import '$lib/styles/output.css'
 
 	let result: string
 
-	$: {
-		if ($code) {
-			fetch('/api/v1/render', { method: 'post', body: $code }).then(
-				async (response) => {
-					if (response.ok) {
-						result = await response.text()
-					}
-				}
-			)
-		}
+	export let projectId: string = undefined
+
+	$: project = projectId
+		? $storedProjects.find((p) => p.id === projectId)
+		: $currentProject
+
+	$: if (project?.code) {
+		fetch('/api/v1/render', {
+			method: 'post',
+			body: project.code,
+		}).then(async (response) => {
+			if (response.ok) {
+				result = await response.text()
+			}
+		})
 	}
 </script>
 
@@ -25,8 +30,6 @@
 
 <style>
 	.container {
-		/* position: relative; */
-
 		text-align: left;
 
 		height: 100%;

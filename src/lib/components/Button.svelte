@@ -1,6 +1,16 @@
-<button on:click>
-	<slot />
-</button>
+<script lang="ts">
+	export let href: string = undefined
+</script>
+
+{#if href}
+	<a {href}>
+		<slot />
+	</a>
+{:else}
+	<button on:click>
+		<slot />
+	</button>
+{/if}
 
 <style>
 	button {

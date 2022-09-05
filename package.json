@@ -28,6 +28,7 @@
     "remark-math": "^5.1.1",
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
+    "sass": "^1.54.5",
     "svelte": "^3.49.0",
     "svelte-check": "^2.8.0",
     "svelte-preprocess": "^4.10.7",

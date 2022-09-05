@@ -1,20 +1,19 @@
-<script lang="ts" context="module">
-	import { writable } from 'svelte/store';
-
-	export const showProjectsOverlay = writable(false)
-</script>
-
 <script lang="ts">
 	import { scale, fade } from 'svelte/transition'
 
-	function handleClick(e: MouseEvent) {
-		if (e.target === backgroundElement) open = false
+	const handleClick = (e: MouseEvent) => {
+		if (dismissable && e.target === backgroundElement) open = false
+	}
+
+	const handleKeydown = (e: KeyboardEvent) => {
+		if (dismissable && e.key === 'Escape') open = false
 	}
 
 	let backgroundElement: HTMLElement
 
 	export let open = false
 	export let size: 's' | 'm' | 'l' = 'm'
+	export let dismissable = true
 
 	$: cssVariables = (() => {
 		switch (size) {
@@ -39,6 +38,8 @@
 	})()
 </script>
 
+<svelte:window on:keydown={handleKeydown} />
+
 {#if open}
 	<div
 		on:click={handleClick}
@@ -46,7 +47,11 @@
 		class="overlay-background"
 		bind:this={backgroundElement}
 	>
-		<div style={cssVariables} transition:scale class="overlay-container">
+		<div
+			style={cssVariables}
+			transition:scale
+			class="overlay-container"
+		>
 			<slot />
 		</div>
 	</div>
@@ -70,8 +75,8 @@
 	}
 
 	.overlay-container {
-		display: grid;
-		place-content: center;
+		/* display: grid; */
+		/* place-content: center; */
 
 		width: min(100vw, var(--width));
 		height: min(100vh, var(--height));

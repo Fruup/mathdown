@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import { get, writable } from "svelte/store"
+	import { get, writable } from 'svelte/store'
 
 	export function download(data: Blob, filename: string) {
 		const url = window.URL.createObjectURL(data)

@@ -1,22 +1,20 @@
-import { browser } from "$app/env"
-import { writable } from "svelte/store"
+import { browser } from '$app/env'
+import { writable } from 'svelte/store'
 
 export function clampSeparatorPosition(value: number): number {
-	return Math.max(Math.min(value, .75), .25)
+	return Math.max(Math.min(value, 0.75), 0.25)
 }
 
 export const separatorPosition = (() => {
 	const STORAGE_KEY = 'separatorPosition'
-	const DEFAULT_VALUE = .5
+	const DEFAULT_VALUE = 0.5
 
 	let initial: number
 
 	if (browser) {
 		const stored = localStorage.getItem(STORAGE_KEY)
 		initial = clampSeparatorPosition(
-			typeof stored === 'string' ?
-				parseFloat(stored) :
-				DEFAULT_VALUE
+			typeof stored === 'string' ? parseFloat(stored) : DEFAULT_VALUE
 		)
 	}
 
@@ -31,9 +29,12 @@ export const separatorPosition = (() => {
 	return store
 })()
 
-export const code = (() => {
-	const init = browser ? (localStorage.getItem('code') ?? '') : ''
-	return writable<string>(init)
+export const darkMode = (() => {
+	const init = browser
+		? !!JSON.parse(localStorage.getItem('dark') ?? 'true')
+		: true
+	return writable<boolean>(init)
 })()
 
-export const darkMode = writable(false)
+export const showProjectsOverlay = writable(false)
+export const showProjectNameOverlay = writable(false)
