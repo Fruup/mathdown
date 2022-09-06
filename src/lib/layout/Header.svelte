@@ -2,8 +2,9 @@
 	import IconMoon from '$lib/icons/IconMoon.svelte'
 	import Button from '$lib/components/Button.svelte'
 	import { darkMode, showProjectsOverlay } from '$lib/store'
-import IconDownload from '$lib/icons/IconDownload.svelte'
-import { currentProject } from '$lib/project';
+	import IconDownload from '$lib/icons/IconDownload.svelte'
+	import { currentProject } from '$lib/project'
+	import ProjectSavedIndicator from '$lib/components/ProjectSavedIndicator.svelte'
 
 	const handleThemeChange = () => {
 		$darkMode = !$darkMode
@@ -13,17 +14,22 @@ import { currentProject } from '$lib/project';
 
 <header>
 	<div>
+		<ProjectSavedIndicator />
+
 		<Button on:click={() => ($showProjectsOverlay = !$showProjectsOverlay)}>
 			projects
 		</Button>
 	</div>
+
 	<a href="/">
 		<h1>_MATHDOWN_</h1>
 	</a>
+
 	<div>
 		<Button on:click={handleThemeChange}>
 			<IconMoon />
 		</Button>
+
 		<Button href={`${$currentProject.id}/print`}>
 			<IconDownload />
 		</Button>

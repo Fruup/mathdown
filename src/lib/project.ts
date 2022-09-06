@@ -1,13 +1,15 @@
-import { browser } from '$app/env'
+import { browser } from '$app/environment'
 import { download } from '$lib/components/Downloader.svelte'
 import { writable } from 'svelte/store'
 
 export type Project = {
 	id: string
-	name: string
+	name?: string
 	code: string
 	createdAt?: string
 }
+
+export type StoredProject = Required<Project>
 
 export const generateProjectId = (length = 4): string =>
 	Math.floor(Math.random() * Math.pow(16, length))
@@ -15,19 +17,24 @@ export const generateProjectId = (length = 4): string =>
 		.padStart(length, '0')
 
 export const storeProject = (project: Project): void => {
+	if (!project.createdAt || !project.name)
+		throw Error(`Invalid project! (${JSON.stringify(project)})`,)
+
 	const json = JSON.stringify(project, undefined, 2)
 	localStorage.setItem('project-' + project.id, json)
 
 	storedProjects.load()
+
+	projectSaved.set(true)
 }
 
-export const loadProject = (id: string): Project | undefined => {
+export const loadProject = (id: string): StoredProject | undefined => {
 	const loaded = localStorage.getItem('project-' + id)
 
 	if (loaded) return JSON.parse(loaded)
 }
 
-export const exportProject = (project: Project): void => {
+export const exportProject = (project: StoredProject): void => {
 	const filename = project.name
 		.split(' ')
 		.map((s) => s.toLowerCase())
@@ -49,8 +56,6 @@ export const currentProject = (() => {
 		store.set({
 			id: generateProjectId(),
 			code: '',
-			name: '',
-			createdAt: new Date().toISOString(),
 		})
 
 	reset()
@@ -62,13 +67,13 @@ export const currentProject = (() => {
 })()
 
 export const storedProjects = (() => {
-	const store = writable<Project[]>([])
+	const store = writable<StoredProject[]>([])
 
 	const load = () => {
 		store.set(
 			Array.from(Array(localStorage.length), (_, i) => localStorage.key(i))
 				.filter((k) => k.startsWith('project-'))
-				.map((k) => JSON.parse(localStorage.getItem(k)) as Project)
+				.map((k) => JSON.parse(localStorage.getItem(k)) as StoredProject)
 		)
 	}
 
@@ -79,3 +84,5 @@ export const storedProjects = (() => {
 		load,
 	}
 })()
+
+export const projectSaved = writable(false)

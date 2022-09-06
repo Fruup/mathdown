@@ -1,4 +1,5 @@
-import { browser } from '$app/env'
+import { browser } from '$app/environment'
+import Cookies from 'js-cookie'
 import { writable } from 'svelte/store'
 
 export function clampSeparatorPosition(value: number): number {
@@ -30,10 +31,13 @@ export const separatorPosition = (() => {
 })()
 
 export const darkMode = (() => {
-	const init = browser
-		? !!JSON.parse(localStorage.getItem('dark') ?? 'true')
-		: true
-	return writable<boolean>(init)
+	const init = browser ? !!JSON.parse(Cookies.get('dark') ?? 'true') : true
+
+	const store = writable<boolean>(init)
+
+	store.subscribe((dark) => Cookies.set('dark', dark ? 'true' : 'false'))
+
+	return store
 })()
 
 export const showProjectsOverlay = writable(false)

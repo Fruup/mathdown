@@ -28,3 +28,7 @@
 .ͼ1.cm-editor.cm-focused {
 	outline: none;
 }
+
+#app.dark .ͼ2 .cm-selectionBackground {
+	background: var(--background-color-highlight);
+}

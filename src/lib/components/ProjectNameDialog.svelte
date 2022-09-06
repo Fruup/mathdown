@@ -7,6 +7,9 @@
 		if ($showProjectNameOverlay && $currentProject.name && e.key === 'Enter') {
 			$showProjectNameOverlay = false
 
+			// set date of creation
+			$currentProject.createdAt = new Date().toISOString()
+
 			storeProject($currentProject)
 			storedProjects.load()
 		}

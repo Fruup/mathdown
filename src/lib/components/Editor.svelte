@@ -61,7 +61,7 @@
 </script>
 
 <script lang="ts">
-	import { browser } from '$app/env'
+	import { browser } from '$app/environment'
 	import { onDestroy, onMount } from 'svelte'
 	import { markdown } from '@codemirror/lang-markdown'
 	import { EditorState } from '@codemirror/state'
@@ -72,7 +72,7 @@
 	} from '@codemirror/view'
 	import { EditorView, minimalSetup } from 'codemirror'
 	import { DebouncedAction } from '$lib/helpers'
-	import { currentProject, storeProject } from '$lib/project'
+	import { currentProject, projectSaved, storeProject } from '$lib/project'
 	import { writable } from 'svelte/store'
 
 	onMount(() => {
@@ -89,7 +89,8 @@
 		if (browser) {
 			$currentProject.code = $editorCode
 
-			if ($currentProject?.name) storeProject($currentProject)
+			// if ($currentProject?.name) storeProject($currentProject)
+			$projectSaved = false
 		}
 	}, 500)
 

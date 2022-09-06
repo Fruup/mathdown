@@ -1,0 +1,26 @@
+#app,
+body {
+	--text-color: #111;
+	--text-color-light: #333;
+	--background-color: #fff;
+	--background-color-highlight: #f3f3f3;
+
+	--text-color-light--alpha: rgba(51, 51, 51, 0.2)
+
+	--link-color: rgb(0, 151, 226);
+	--shadow-color: rgba(0, 0, 0, 0.2);
+
+	--accent-green: #3a3;
+	--accent-red: #e33;
+}
+
+#app.dark {
+	--text-color: #eee;
+	--text-color-light: #bbb;
+	--background-color: rgb(50, 50, 50);
+	--background-color-highlight: rgb(57, 57, 57);
+	
+	--text-color-light--alpha: rgba(187, 187, 187, 0.2);
+	
+	--accent-red: #d33;
+}

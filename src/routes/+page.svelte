@@ -8,14 +8,13 @@
 	const handleKeydownWindow = (e: KeyboardEvent) => {
 		if ($showProjectNameOverlay || $showProjectsOverlay) return
 
-		if (e.key === 's' && e.metaKey) {
+		if (e.key === 's' && (e.metaKey || e.ctrlKey)) {
 			e.preventDefault()
 
 			if (!$currentProject) {
 				$currentProject = {
 					id: generateProjectId(),
 					code: '',
-					name: '',
 				}
 			}
 

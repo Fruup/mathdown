@@ -1,4 +1,4 @@
-import { browser } from '$app/env'
+import { browser } from '$app/environment'
 import { storedProjects } from '$lib/project'
 import { error } from '@sveltejs/kit'
 import { get } from 'svelte/store'
