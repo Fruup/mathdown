@@ -42,14 +42,14 @@
 
 {#if open}
 	<div
-		on:click={handleClick}
+		on:pointerdown={handleClick}
 		transition:fade
 		class="overlay-background"
 		bind:this={backgroundElement}
 	>
 		<div
 			style={cssVariables}
-			transition:scale
+			transition:scale={{ duration: 150, start: 0.8 }}
 			class="overlay-container"
 		>
 			<slot />

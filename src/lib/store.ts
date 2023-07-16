@@ -1,5 +1,5 @@
-import { browser } from '$app/env'
-import { writable } from 'svelte/store'
+import { browser } from '$app/environment'
+import { get, writable } from 'svelte/store'
 
 export function clampSeparatorPosition(value: number): number {
 	return Math.max(Math.min(value, 0.75), 0.25)
@@ -33,7 +33,13 @@ export const darkMode = (() => {
 	const init = browser
 		? !!JSON.parse(localStorage.getItem('dark') ?? 'true')
 		: true
-	return writable<boolean>(init)
+
+	const store = writable<boolean>(init)
+
+	return {
+		...store,
+		get: () => get(store),
+	}
 })()
 
 export const showProjectsOverlay = writable(false)

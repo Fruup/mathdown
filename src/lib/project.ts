@@ -1,4 +1,4 @@
-import { browser } from '$app/env'
+import { browser } from '$app/environment'
 import { download } from '$lib/components/Downloader.svelte'
 import { writable } from 'svelte/store'
 

@@ -1,7 +1,8 @@
 <script lang="ts">
+	import type { SvelteComponent } from 'svelte'
 	import Button from './Button.svelte'
 
-	export let icon: object
+	export let icon: typeof SvelteComponent
 	// export let size: 'sm' | 'md' | 'lg' = 'md'
 
 	// $: style = (() => {

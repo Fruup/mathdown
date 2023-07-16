@@ -61,7 +61,7 @@
 </script>
 
 <script lang="ts">
-	import { browser } from '$app/env'
+	import { browser } from '$app/environment'
 	import { onDestroy, onMount } from 'svelte'
 	import { markdown } from '@codemirror/lang-markdown'
 	import { EditorState } from '@codemirror/state'
@@ -98,9 +98,10 @@
 	}
 </script>
 
+<!-- on:click={() => $editor.focus()} -->
+
 <div
 	class="editor-container"
-	on:click={() => $editor.focus()}
 	bind:this={editorContainer}
 />
 
